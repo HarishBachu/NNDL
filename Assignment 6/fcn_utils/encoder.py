@@ -23,7 +23,31 @@ class ConvBlock(layers.Layer):
         pooled = self.pool(x) 
         return input_tensor, pooled 
 
-class Encoder(models.Model):
+class ConvDropout(layers.Layer):
+    def __init__(self):
+        super(ConvDropout, self).__init__() 
+        self.conv = layers.Conv2D(4096, (7, 7), activation="relu", padding="same")
+        self.dropout = layers.Dropout(0.5) 
+
+    def call(self, input_tensor):
+        x = self.conv(input_tensor)
+        x = self.dropout(x)
+        return x 
+
+class ConvCrop(layers.Layer):
+    def __init__(self, n_classes, kernelSize, strides):
+        super(ConvCrop, self).__init__() 
+        self.deConv = layers.Conv2DTranspose(n_classes, kernel_size=kernelSize, strides=strides)
+        self.crop = layers.Cropping2D(((1, 1), (1, 1))) 
+
+    def call(self, input_tensor):
+        x = self.deConv(input_tensor)
+        x = self.crop(x)
+        return x 
+
+         
+
+class Encoder(layers.Layer):
     def __init__(self):
         super(Encoder, self).__init__() 
         
