@@ -12,7 +12,7 @@ class ConvBlock(layers.Layer):
                 filters=nKernels, 
                 kernel_size=kernelSize, 
                 padding=padding, strides=strides, 
-                activation="relu"
+                activation=activation
             )
         ]) * nconvs 
 
